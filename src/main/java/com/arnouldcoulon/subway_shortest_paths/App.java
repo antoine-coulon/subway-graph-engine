@@ -54,7 +54,7 @@ public class App
         }
         
         stations.entrySet().forEach(entry->{
-            System.out.println(entry.getKey() + " " + entry.getValue().getNom());  
+            System.out.println(entry.getKey() + " " + entry.getValue().toString());  
          });
     }
 }

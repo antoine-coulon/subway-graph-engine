@@ -8,7 +8,23 @@ public class Station {
 	private String nom;
 	private double lat;
 	private double lng;
+	private String type;
+	private boolean isHue;
 	
+	
+	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public boolean isHue() {
+		return isHue;
+	}
+	public void setHue(boolean isHue) {
+		this.isHue = isHue;
+	}
 	public String getNom() {
 		return nom;
 	}
@@ -27,6 +43,9 @@ public class Station {
 	public void setLng(double lng) {
 		this.lng = lng;
 	}
-
+	
+	public String toString() {
+		   return " Nom = " + nom + " lat = "+ lat + " lng = "+ lng + " Type = "+ type + " IsHue = "+ isHue ;
+		}
 	
 }
