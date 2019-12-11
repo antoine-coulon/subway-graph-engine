@@ -2,6 +2,7 @@ package com.arnouldcoulon.subway;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+//Permet de pas recuperer tous les elements du Json
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Station {
 
@@ -9,8 +10,7 @@ public class Station {
 	private double lat;
 	private double lng;
 	private String type;
-	private boolean isHue;
-	
+	private boolean isHue; // inutile ...
 	
 	
 	public String getType() {

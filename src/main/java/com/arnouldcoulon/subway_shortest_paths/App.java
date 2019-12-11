@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.arnouldcoulon.subway.Ligne;
 import com.arnouldcoulon.subway.Station;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +26,9 @@ public class App
         System.out.println( "Hello World!" );
         
 
-        Map<String,Station> stations = new HashMap();
+        Map<String,Station> stations = new HashMap<String, Station>();
+        List<Ligne> lignes = new ArrayList<>();
+        
         
         try {
         
@@ -34,18 +37,54 @@ public class App
 		
 		//create ObjectMapper instance
 		ObjectMapper mapper = new ObjectMapper();
-		
 		JsonNode rootNode = mapper.readTree(jsonData);
 		
-		JsonNode stationNode = rootNode.path("stations");
-		Iterator<String> itName = stationNode.fieldNames();
+		//Recuperation des stations //
 		
+		JsonNode stationsNode = rootNode.path("stations");
+		Iterator<String> itName = stationsNode.fieldNames();
 		
-		Iterator<JsonNode> it = stationNode.iterator();
-		while(it.hasNext()) {
-			JsonNode station = it.next();
-			 System.out.println(station);
-			stations.put(itName.next(), mapper.treeToValue(station, Station.class));
+		Iterator<JsonNode> it_stations = stationsNode.iterator();
+		while(it_stations.hasNext()) {
+			JsonNode stationItem = it_stations.next();
+			 Station station = mapper.treeToValue(stationItem, Station.class);
+			 
+			 if(station.getType().equals("metro")) {
+				 
+				 stations.put(itName.next(), station);
+			 }
+				 
+		}
+		
+		//Recuperation des lignes //
+		
+		JsonNode lignesNode = rootNode.path("lignes");
+		
+		Iterator<JsonNode> it_lignes = lignesNode.iterator();
+		while(it_lignes.hasNext()) {
+			JsonNode ligneItem = it_lignes.next();
+			 Ligne ligne = mapper.treeToValue(ligneItem, Ligne.class);
+			 
+			 if(ligne.getType().equals("metro")) {
+				 JsonNode arretsNode = ligneItem.path("arrets");
+				 Iterator<JsonNode> it_route = arretsNode.iterator();
+				 List<Station> stationsInLigne = new ArrayList<>();
+				 //On cherche a integrer toutes les routes deservie par la ligne pour trouver les stations
+				 while(it_route.hasNext()) {
+					 //Creer un type route Utile ????
+					 Iterator<JsonNode> it_station = it_route.next().iterator();
+					 while(it_station.hasNext()) {
+						 String key_station = it_station.next().asText();
+						 Station station = stations.get(key_station);
+						 if(station!=null)
+						 stationsInLigne.add(station);
+					 }
+					 
+				 }
+				 ligne.setStations(stationsInLigne);
+				 lignes.add(ligne);
+			 }
+				 
 		}
 		
 		
@@ -53,8 +92,16 @@ public class App
         	e.printStackTrace();
         }
         
+        System.out.println("////////// LISTE DES STATIONS //////////");
         stations.entrySet().forEach(entry->{
             System.out.println(entry.getKey() + " " + entry.getValue().toString());  
          });
+        
+        System.out.println("////////// LISTE DES LIGNES ET LEUR STATION ASSOCIEES //////////");
+        for(Ligne ligne : lignes) {
+        	System.out.println(ligne.toString());
+        }
+        
+        
     }
 }
