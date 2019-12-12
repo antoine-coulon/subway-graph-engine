@@ -1,6 +1,9 @@
 package com.arnouldcoulon.subway;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -11,7 +14,7 @@ public class Ligne {
 	private String name;
 	private String type;
 	private String num;
-	private List<Station> stations;
+	private List<Map<String, Station>> routes; // Ligne possede des routes // 1 route est constituté de stations(arrets)
 	
 	public String getName() {
 		return name;
@@ -31,24 +34,24 @@ public class Ligne {
 	public void setNum(String num) {
 		this.num = num;
 	}
-	public List<Station> getStations() {
-		return stations;
+
+	public List<Map<String, Station>> getRoutes() {
+		return routes;
 	}
-	public void setStations(List<Station> stations) {
-		this.stations = stations;
+	public void setRoutes(List<Map<String, Station>> routes) {
+		this.routes = routes;
 	}
-	
+
+
 	public String toString() {
 		   
-				   String res =" /////// Ligne " + "(" + num + ")" + " = " + name + "\\\\\\\\"+ "\n" ;
-				   for(Station station: stations) {
-					   if(station.getNom().equals("Gambetta"))
-						return res;
-					   res+= " Station = " +station.getNom()+ " \n";
-					   }
-				   
-				   return res;
-		}
-	
+				   StringBuilder res = new StringBuilder(" /////// Ligne = " + "(" + num + ") " + name + " \\\\\\\\" + "\n");
+
+			        /* for (Map.Entry station : routes.iterator()) {
+			            res.append(" Station = ").append(station.getKey()).append(" ").append(((Station) station.getValue()).getNom());
+			        } */
+				   return res.toString();
+	}
+
 	
 }

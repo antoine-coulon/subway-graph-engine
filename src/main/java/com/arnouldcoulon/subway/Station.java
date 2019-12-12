@@ -6,13 +6,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Station {
 
+	private String num;
 	private String nom;
 	private double lat;
 	private double lng;
 	private String type;
 	private boolean isHue; // inutile ...
 	
-	
+	public String getNum() { return num; }
+	public void setNum() { this.num = num; }
 	public String getType() {
 		return type;
 	}
@@ -45,7 +47,7 @@ public class Station {
 	}
 	
 	public String toString() {
-		   return " Nom = " + nom + " lat = "+ lat + " lng = "+ lng + " Type = "+ type + " IsHue = "+ isHue ;
+		   return " Nom = " + nom + " | lat = "+ lat + " | lng = "+ lng + " | type = "+ type + " | id (number) = " + num + " | IsHue = "+ isHue ;
 		}
 	
 }
