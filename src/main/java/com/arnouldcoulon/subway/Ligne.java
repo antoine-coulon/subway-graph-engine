@@ -40,7 +40,7 @@ public class Ligne {
 	
 	public String toString() {
 		   
-				   String res =" /////// Ligne = " + name + "\\\\\\\\"+ "\n" ;
+				   String res =" /////// Ligne " + "(" + num + ")" + " = " + name + "\\\\\\\\"+ "\n" ;
 				   for(Station station: stations) {
 					   if(station.getNom().equals("Gambetta"))
 						return res;
