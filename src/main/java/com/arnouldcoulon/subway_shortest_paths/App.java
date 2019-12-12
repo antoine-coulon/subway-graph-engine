@@ -48,10 +48,10 @@ public class App
 		while(it_stations.hasNext()) {
 			JsonNode stationItem = it_stations.next();
 			 Station station = mapper.treeToValue(stationItem, Station.class);
-			 
+			 String key_station = itName.next();
 			 if(station.getType().equals("metro")) {
 				 
-				 stations.put(itName.next(), station);
+				 stations.put(key_station, station);
 			 }
 				 
 		}
@@ -68,24 +68,44 @@ public class App
 			 if(ligne.getType().equals("metro")) {
 				 JsonNode arretsNode = ligneItem.path("arrets");
 				 Iterator<JsonNode> it_route = arretsNode.iterator();
-				 List<Station> stationsInLigne = new ArrayList<>();
+				 
+				
 				 //On cherche a integrer toutes les routes deservie par la ligne pour trouver les stations
+				 List<Map<Integer,Station>> routes = new ArrayList<>();
 				 while(it_route.hasNext()) {
-					 //Creer un type route Utile ????
-					 Iterator<JsonNode> it_station = it_route.next().iterator();
+					 
+					 JsonNode routeNode = it_route.next();
+					 Map<Integer,Station> route = new HashMap<>();
+					 Iterator<JsonNode> it_station = routeNode.iterator();
+					 int stationInterator=0;
 					 while(it_station.hasNext()) {
+						 
+						 //FOnctionne pas
 						 String key_station = it_station.next().asText();
 						 Station station = stations.get(key_station);
 						 if(station!=null)
-						 stationsInLigne.add(station);
+							 route.put(stationInterator, station);
+						 stationInterator++;
 					 }
+					 routes.add(route);
+					 
 					 
 				 }
-				 ligne.setStations(stationsInLigne);
+				 ligne.setRoutes(routes);
 				 lignes.add(ligne);
 			 }
 				 
 		}
+		
+		//Recuperation des correspondances //
+		//Cas particulier des stations differentes mais en liaison par sous terrain pieton
+		
+		JsonNode correspNode = rootNode.path("corresp");
+		
+		
+		
+		
+		
 		
 		
         }catch (Exception e) {
@@ -99,7 +119,7 @@ public class App
         
         System.out.println("////////// LISTE DES LIGNES ET LEUR STATION ASSOCIEES //////////");
         for(Ligne ligne : lignes) {
-        	System.out.println(ligne.toString());
+        	//System.out.println(ligne.toString());
         }
         
         
