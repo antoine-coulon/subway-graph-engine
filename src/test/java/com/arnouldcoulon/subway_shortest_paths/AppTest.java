@@ -1,5 +1,10 @@
 package com.arnouldcoulon.subway_shortest_paths;
 
+import java.util.List;
+
+import com.arnouldcoulon.subway.Correspondance;
+import com.arnouldcoulon.subway.Station;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -36,3 +41,20 @@ public class AppTest
         assertTrue( true );
     }
 }
+
+
+//Ajouter dans un test ? //
+
+
+/* Exemple où on récupère les correspondances d'une station donnée 
+Station s = stations.get("1694");
+//Si cette station a des correspondances
+if(Correspondance.hasCorrespondances(s)) {
+	// On récupère une liste de station qui sont les correspondances de la station donnée 
+	List<Station> ls = Correspondance.getStationCorrespondances(s);
+	for(Station correspStation: ls) {
+		// Ajout d'un edge entre cette station et la correspondance par exemple 
+		// s.addEdge(correspStation);
+	}
+}
+*/
