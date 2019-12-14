@@ -71,11 +71,11 @@ public class JsonDataReader {
 
 				// On cherche a integrer toutes les routes deservie par la ligne pour trouver
 				// les stations
-				List<Map<String, Station>> routes = new ArrayList<>();
+				List<List<Station>> routes = new ArrayList<>();
 				while (it_route.hasNext()) {
 
 					JsonNode routeNode = it_route.next();
-					Map<String, Station> route = new HashMap<>();
+					List<Station> route = new ArrayList<>();
 					Iterator<JsonNode> it_station = routeNode.iterator();
 
 					while (it_station.hasNext()) {
@@ -83,7 +83,7 @@ public class JsonDataReader {
 						String key_station = it_station.next().textValue();
 						Station station = stations.get(key_station);
 						if (station != null)
-							route.put(key_station, station);
+							route.add(station);
 					}
 					routes.add(route);
 
@@ -180,6 +180,10 @@ public class JsonDataReader {
 
 	public List<Ligne> getLignes() {
 		return lignes;
+	}
+	
+	public List<Station> getListStations(){
+		return new ArrayList(stations.values());
 	}
 
 	public String toString() {

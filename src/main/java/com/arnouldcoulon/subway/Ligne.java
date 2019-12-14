@@ -14,7 +14,7 @@ public class Ligne {
 	private String name;
 	private String type;
 	private String num;
-	private List<Map<String, Station>> routes; // Ligne possede des routes // 1 route est constituté de stations(arrets)
+	private List<List<Station>> routes; // Ligne possede des routes // 1 route est constituté de stations(arrets)
 	
 	public String getName() {
 		return name;
@@ -35,10 +35,12 @@ public class Ligne {
 		this.num = num;
 	}
 
-	public List<Map<String, Station>> getRoutes() {
+	public List<List<Station>> getRoutes() {
 		return routes;
 	}
-	public void setRoutes(List<Map<String, Station>> routes) {
+	
+	
+	public void setRoutes(List<List<Station>> routes) {
 		this.routes = routes;
 	}
 
