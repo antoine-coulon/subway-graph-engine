@@ -10,7 +10,7 @@ public class SubwayGraphFactory {
 	private static int WEIGHTED_GRAPH = 1;
 	
 	
-	public static Graph<Station, DefaultEdge> createSubwayGraph(){
+	public static Graph<Station, DefaultEdge> createSubwayUnweightedGraph(){
 		
 		JsonDataReader subwayDatas = new JsonDataReader();
         
