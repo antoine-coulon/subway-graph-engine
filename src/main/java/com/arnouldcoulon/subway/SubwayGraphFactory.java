@@ -1,27 +1,47 @@
-package com.arnouldcoulon.subway;import java.util.List;
+package com.arnouldcoulon.subway;
 
+import java.util.List;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.graph.SimpleWeightedGraph;
 
 public class SubwayGraphFactory {
 	
-	private static int SIMPLE_GRAPH = 0;
+	private static int UNWEIGHTED_GRAPH = 0;
 	private static int WEIGHTED_GRAPH = 1;
 	
 	
 	public static Graph<Station, DefaultEdge> createSubwayUnweightedGraph(){
 		
+		return generateSubwayGraph(UNWEIGHTED_GRAPH);
+	}
+	
+	public static Graph<Station, DefaultEdge> createSubwayWeightedGraph(){
+
+		return generateSubwayGraph(WEIGHTED_GRAPH);
+		
+	}
+	
+	private static Graph<Station, DefaultEdge> generateSubwayGraph(int type){
+		
 		JsonDataReader subwayDatas = new JsonDataReader();
         
         //Generation du graph simple
         
-        Graph<Station, DefaultEdge> graphSubway = new SimpleGraph<>(DefaultEdge.class);
+        Graph<Station, DefaultEdge> graph;
+        
+        if(type == UNWEIGHTED_GRAPH)
+        	graph = new SimpleGraph<>(DefaultEdge.class);
+        else if( type == WEIGHTED_GRAPH )
+        	graph = new SimpleWeightedGraph<Station,DefaultEdge>(DefaultEdge.class);
+        else
+        	return null; //BofBof
         
         //Creation des vertex
         List<Station> stations = subwayDatas.getListStations();
         for(Station station : stations) {
-        	graphSubway.addVertex(station);
+        	graph.addVertex(station);
         }
         
         //Creation des edges
@@ -32,8 +52,11 @@ public class SubwayGraphFactory {
         	for(List<Station> route : routes) {
         		Station lastStation = null;
         		for(Station station :route) {
-        			if(lastStation!=null)
-        				graphSubway.addEdge(lastStation, station);
+        			if(lastStation!=null) {
+        				graph.addEdge(lastStation, station);
+        				if(type == WEIGHTED_GRAPH)
+        					graph.setEdgeWeight(lastStation, station, getDistanceBetweenStations(lastStation,station));
+        			}
         			lastStation = station;
         		}
         		
@@ -51,21 +74,23 @@ public class SubwayGraphFactory {
             	List<Station> ls = Correspondance.getStationCorrespondances(station);
             	for(Station correspStation: ls) {
             		// Ajout d'un edge entre cette station et la correspondance par exemple 
-            		graphSubway.addEdge(station,correspStation);
+            		graph.addEdge(station,correspStation);
+            		if(type == WEIGHTED_GRAPH)
+            		graph.setEdgeWeight(station, correspStation, getDistanceBetweenStations(station,correspStation)); // On ajoute un poids au correspondance ????
             	}
             }
         	
         }
         
         System.out.println( "Graph pret !" );
-        
-		return graphSubway;
 		
+		
+		return graph;	
 	}
 	
-	public static Graph<Station, DefaultEdge> createSubwayWeightedGraph(){
-		return null;
-		
-	}	
+	private static double getDistanceBetweenStations(Station src, Station dst) {
+		//Distance euclidienne
+		return Math.sqrt((Math.pow((src.getLat() - dst.getLat()),2) + Math.pow((src.getLng() - dst.getLng()),2)));
+	}
 
 }
