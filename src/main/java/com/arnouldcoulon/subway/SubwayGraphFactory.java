@@ -1,5 +1,6 @@
 package com.arnouldcoulon.subway;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
@@ -21,6 +22,10 @@ public class SubwayGraphFactory {
 
 		return generateSubwayGraph(WEIGHTED_GRAPH);
 		
+	}
+
+	public static ArrayList<Station> setStations(Graph<Station, DefaultEdge> graph) {
+		return new ArrayList<Station>(graph.vertexSet());
 	}
 	
 	private static Graph<Station, DefaultEdge> generateSubwayGraph(int type){
@@ -62,8 +67,7 @@ public class SubwayGraphFactory {
         		
         	}
         }
-        
-        
+
         //Creation des edges : correspondances
        
         for(Station station : stations) {
@@ -81,16 +85,31 @@ public class SubwayGraphFactory {
             }
         	
         }
-        
-        System.out.println( "Graph pret !" );
-		
-		
+
+        String typeGraph = type == 0 ? "Unweighted" : "Weighted";
+        System.out.println( typeGraph + " Graph is ready!" );
+
 		return graph;	
 	}
 	
 	private static double getDistanceBetweenStations(Station src, Station dst) {
-		//Distance euclidienne
-		return Math.sqrt((Math.pow((src.getLat() - dst.getLat()),2) + Math.pow((src.getLng() - dst.getLng()),2)));
+
+		int earthRadiusKm = 6371;
+
+		double dLat = degreesToRadians(dst.getLat()-src.getLat());
+		double dLon = degreesToRadians(dst.getLng()-src.getLng());
+
+		double lat1 = degreesToRadians(src.getLat());
+		double lat2 = degreesToRadians(dst.getLat());
+
+		double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+				Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		return earthRadiusKm * c;
+	}
+
+	private static double degreesToRadians(double degrees) {
+		return degrees * Math.PI / 180;
 	}
 
 }

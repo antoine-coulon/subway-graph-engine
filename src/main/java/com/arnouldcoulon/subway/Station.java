@@ -47,7 +47,7 @@ public class Station {
 	}
 	
 	public String toString() {
-		   return " Nom = " + nom + " | lat = "+ lat + " | lng = "+ lng + " | type = "+ type + " | id (number) = " + num + " | IsHue = "+ isHue ;
+		   return " Nom = " + getNom()  + " " + "| Numéro = " + getNum();
 		}
 	
 }
