@@ -1,13 +1,12 @@
 package com.arnouldcoulon.subway;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.io.File;
+
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,8 +22,12 @@ public class JsonDataReader {
 
 	public JsonDataReader() {
 		try {
+			String fileName = "data.json";
+			ClassLoader classLoader = getClass().getClassLoader();
+
+			File file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
 			// read json file data to String
-			byte[] jsonData = Files.readAllBytes(Paths.get("data.json"));
+			byte[] jsonData = Files.readAllBytes(Paths.get(String.valueOf(file.toPath())));
 			rootNode = mapper.readTree(jsonData);
 
 			readStations();
@@ -33,6 +36,7 @@ public class JsonDataReader {
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			e.getMessage();
 			e.printStackTrace();
 		}
 
