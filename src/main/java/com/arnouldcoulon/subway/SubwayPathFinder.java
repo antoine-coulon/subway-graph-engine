@@ -13,6 +13,12 @@ import java.util.Set;
 
 public class SubwayPathFinder implements PathFinder {
 
+
+    /*
+    * Class containing all methods that we can perform on our generic graphs.
+    * These are available whether for the console or server mode.
+    * */
+
     public double getGraphDiameter(Graph<Station, DefaultEdge> graph) {
         return new GraphMeasurer<Station, DefaultEdge>(graph).getDiameter();
     }

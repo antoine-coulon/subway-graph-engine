@@ -42,49 +42,48 @@ public class App
     {
 
 
+        /*
+        * Instantiating all the needed classes and structures to build a generic Graph filled by our data.
+        * The results are printed out in the console.
+        * To get these results as JSON, use the beside server API.
+        * */
+
         Graph<Station, DefaultEdge> unweightedGraphSubway = SubwayGraphFactory.createSubwayUnweightedGraph();
         Graph<Station, DefaultEdge> weightedGraphSubway = SubwayGraphFactory.createSubwayWeightedGraph();
 
-        //AllDirectedPaths inspectorPath = new AllDirectedPaths(graphSubway);
-        //List<GraphPath> paths = inspectorPath.getAllPaths(stations.get(0), stations.get(stations.size()-1), false, Integer.MAX_VALUE);
-       //KShortestPaths<Station, DefaultEdge> pathInspector = new KShortestPaths<Station, DefaultEdge>(graphSubway,Integer.MAX_VALUE, Integer.MAX_VALUE);
-        //GraphPath shortestPath = BellmanFordShortestPath.findPathBetween(graphSubway,stations.get(0), stations.get(stations.size()-1));
-        //shortestPath.get
-       // Iterator<GraphPath<Station,DefaultEdge>> it_path = new EppsteinShortestPathIterator(graphSubway,stations.get(0), stations.get(stations.size()-1));
-        
-        //System.out.println(subwayDatas.toString());
-
     	List<Station> stations = SubwayGraphFactory.setStations(unweightedGraphSubway);
     	List<Station> weightedStations = SubwayGraphFactory.setStations(weightedGraphSubway);
-
-
-        KShortestSimplePaths shortestPathsFinder = new KShortestSimplePaths(unweightedGraphSubway);
-        List<GraphPath<Station,DefaultEdge>> shortestPaths = shortestPathsFinder.getPaths(stations.get(0), stations.get(stations.size()-1),300);
-        
-        List<Station>  shortPath = shortestPaths.get(0).getVertexList();
-        GraphPath longestShortPath = shortestPaths.get(shortestPaths.size()-1);
-        List<Station> pathFound = longestShortPath.getVertexList();
-        
-        System.out.println(" TRAJET PLUS COURT DE "+ stations.get(0).getNom() +" A "+ stations.get(stations.size()-1).getNom()+"\n");
-        for(Station station : shortPath) {
-        	//System.out.println(station.getNom());
-        }
-        
-        
-        System.out.println(" TRAJET DE "+ stations.get(0).getNom() +" A "+ stations.get(stations.size()-1).getNom()+"\n");
-        for(Station station : pathFound) {
-        	//System.out.println(station.getNom());
-        	
-        }
 
         PathFinder pathFinder = new SubwayPathFinder();
         List<Station> diameterUnweightedStationsPath = pathFinder.findDiameterPathWithBFS(unweightedGraphSubway, stations);
         List<Station> diameterWeightedStationsPath = pathFinder.findDiameterPathWithDijkstra(weightedGraphSubway, stations);
 
+        Station sourceWeighted = diameterWeightedStationsPath.get(12);
+        Station destWeighted = diameterWeightedStationsPath.get(25);
+
+        Station sourceUnweighted = diameterUnweightedStationsPath.get(10);
+        Station destUnweighted = diameterWeightedStationsPath.get(20);
+
+        System.out.println(sourceUnweighted.toString());
+        System.out.println(destUnweighted.toString());
+        System.out.println(sourceWeighted.toString());
+        System.out.println(destUnweighted.toString());
+
+
         System.out.println("Diameter Path for the unweighted Graph");
         SubwayPrinter.printStations(diameterUnweightedStationsPath);
         System.out.println("Diameter Path for the weighted Graph");
         SubwayPrinter.printStations(diameterWeightedStationsPath);
+
+        List<Station> shortestPathWeighted = pathFinder.findShortestPathWithDijkstra(weightedGraphSubway, sourceWeighted, destWeighted);
+        List<Station> shortestPathUnweighted = pathFinder.findShortestPathWithBFS(unweightedGraphSubway, sourceUnweighted, destUnweighted);
+
+        System.out.println("Shortest path from " + sourceUnweighted.getNom() + " to " + destUnweighted.getNom());
+        SubwayPrinter.printStations(shortestPathUnweighted);
+
+        System.out.println("Shortest path from " + sourceUnweighted.getNom() + " to " + destUnweighted.getNom());
+        SubwayPrinter.printStations(shortestPathWeighted);
+
 
     }
 }

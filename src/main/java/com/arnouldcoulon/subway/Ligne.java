@@ -7,14 +7,14 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-//Pour ne pas recuperer les infos inutiles
+/* class used for to serialize JSON into a Java Object */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Ligne {
 
 	private String name;
 	private String type;
 	private String num;
-	private List<List<Station>> routes; // Ligne possede des routes // 1 route est constituté de stations(arrets)
+	private List<List<Station>> routes;
 	
 	public String getName() {
 		return name;
@@ -38,21 +38,14 @@ public class Ligne {
 	public List<List<Station>> getRoutes() {
 		return routes;
 	}
-	
-	
+
 	public void setRoutes(List<List<Station>> routes) {
 		this.routes = routes;
 	}
 
-
 	public String toString() {
-		   
-				   StringBuilder res = new StringBuilder(" /////// Ligne = " + "(" + num + ") " + name + " \\\\\\\\" + "\n");
-
-			        /* for (Map.Entry station : routes.iterator()) {
-			            res.append(" Station = ").append(station.getKey()).append(" ").append(((Station) station.getValue()).getNom());
-			        } */
-				   return res.toString();
+		StringBuilder res = new StringBuilder(" /////// Ligne = " + "(" + num + ") " + name + " \\\\\\\\" + "\n");
+		return res.toString();
 	}
 
 	

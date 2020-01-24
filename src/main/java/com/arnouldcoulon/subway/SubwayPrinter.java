@@ -5,6 +5,7 @@ import java.util.List;
 
 public class SubwayPrinter {
 
+    /* Utility class used to print over Lists */
 
     public static void printStations(List<Station> stations) {
         for(Station s : stations) {

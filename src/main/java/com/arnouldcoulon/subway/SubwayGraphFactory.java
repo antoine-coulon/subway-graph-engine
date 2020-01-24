@@ -1,17 +1,26 @@
 package com.arnouldcoulon.subway;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
 public class SubwayGraphFactory {
+
+
+	/*
+	* Factory class used to build generic weighted or unweighted graphs.
+	* */
 	
 	private static int UNWEIGHTED_GRAPH = 0;
 	private static int WEIGHTED_GRAPH = 1;
-	
+
+	public static Map<String, Station> stationsById = new HashMap<>();
 	
 	public static Graph<Station, DefaultEdge> createSubwayUnweightedGraph(){
 		
@@ -41,11 +50,12 @@ public class SubwayGraphFactory {
         else if( type == WEIGHTED_GRAPH )
         	graph = new SimpleWeightedGraph<Station,DefaultEdge>(DefaultEdge.class);
         else
-        	return null; //BofBof
+        	return null;
         
         //Creation des vertex
         List<Station> stations = subwayDatas.getListStations();
         for(Station station : stations) {
+        	stationsById.put(station.getNum(), station);
         	graph.addVertex(station);
         }
         
@@ -110,6 +120,10 @@ public class SubwayGraphFactory {
 
 	private static double degreesToRadians(double degrees) {
 		return degrees * Math.PI / 180;
+	}
+
+	public static Station getStationById(String id) {
+		return stationsById.get(id);
 	}
 
 }

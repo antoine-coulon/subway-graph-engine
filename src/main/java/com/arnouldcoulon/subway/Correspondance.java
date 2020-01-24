@@ -8,10 +8,10 @@ import java.util.List;
 
 public class Correspondance {
 
-    /* Simple liste de toutes les correspondances */
+    /* List of all correspondances (connections) */
     public static List<Station> correspondances = new ArrayList<Station>();
 
-    /* Map qui associe les correspondances entre-elles */
+    /* Map which links connections between */
     public static Map<String, List<Station>> linkedCorrespondances = new HashMap<>();
 
     public static List<Station> getAllIndependentCorrespondances() {
